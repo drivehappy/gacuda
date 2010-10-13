@@ -5,16 +5,12 @@
 #include <string.h>
 #include <stdlib.h>
 
-// Boost libraries
-//#include <boost/program_options.hpp>
-//namespace po = boost::program_options;
-
 
 //
 // Append our LD_LIBRARY_PATH to the argument environment variables we
 //  received, we need to do this because simply passing LD_PRELOAD in
 //  will kill all the other environment variables to the executable we load.
-char** appendEnv(char** arge, char* newarg)
+char** appendEnv(char** arge, const char* newarg)
 {
 	int argec = 1;
 	char **retVal = NULL;
@@ -45,40 +41,28 @@ char** appendEnv(char** arge, char* newarg)
 int main(int argc, char** argv, char** arge)
 {
 	char exec_name[256];
-	const char *const exec_args[] = {
-		NULL,
-	};
-	const char *const exec_envargs[] = {
-		"LD_PRELOAD=./gaCudaHook.so",
-		"LD_LIBRARY_PATH=/usr/local/cuda/lib64",
-		NULL,
-	};
-
+	char **exec_args = new char*[argc];
 	
-	char *retval = getenv("LD_LIBRARY_PATH");
-	printf("env: %s\n", retval);
+  // Copy argument list minus first element into exec_args
+  for (int i = 0; i < argc - 1; i++) {
+    exec_args[i] = new char[strlen(argv[i+1])];
+    strcpy(exec_args[i], argv[i+1]);
+  }
+  exec_args[argc - 1] = NULL;
 
+  // Copy environment variable list into arge, plus the LD_PRELOAD
 	arge = appendEnv(arge, "LD_PRELOAD=./gaCudaHook.so");
 
-	printf("Env vars:\n");
-	char *itr = NULL;
-	int i = 0;
-	do {
-		itr = arge[i++];
-		printf("   Var: %s\n", itr);
-	} while (itr);
-	
-
-
-	if (argc == 2) {
+	if (argc >= 2) {
 		strncpy(exec_name, argv[1], 256);
 	} else {
 		printf("Error: You need to specify a CUDA executable to run!\n");
 		return -1;
 	}
 
+  // Run the supplied CUDA application
 	printf("Running executable: %s\n", exec_name);
-	int error = execve(exec_name, (char* const*)exec_args, (char* const*)exec_envargs);
+	int error = execve(exec_name, (char* const*)exec_args, (char* const*)arge);
 	
 	if (error == -1) {
 		printf("Error running executable: %s\n", strerror(errno));

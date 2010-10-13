@@ -49,7 +49,7 @@ extern "C"
     printf("cudaConfigureCall\n");
     printf("  gridDim: %i %i %i\n", gridDim.x, gridDim.y, gridDim.z);
     printf("  blockDim: %i %i %i\n", blockDim.x, blockDim.y, blockDim.z);
-    printf("  sharedMem: %li\n", sharedMem);
+    printf("  sharedMem: %zi\n", sharedMem);
 
     realCudaConfigure(gridDim, blockDim, sharedMem, stream);
   }
