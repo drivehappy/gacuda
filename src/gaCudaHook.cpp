@@ -6,11 +6,21 @@
 #include <cuda.h>
 #include <cuda_runtime_api.h>
 
-static void init(void) __attribute__((constructor));
-static void shutdown(void) __attribute__((destructor));
+static void init() __attribute__((constructor));
+static void shutdown() __attribute__((destructor));
 
 typedef cudaError_t(*cudaConfigureType)(dim3, dim3, size_t, cudaStream_t);
 
+
+void init()
+{
+	printf("gaCudaHook library loaded.\n");
+}
+
+void shutdown()
+{
+	printf("gaCudaHook library unloaded.\n");
+}
 
 extern "C"
 {

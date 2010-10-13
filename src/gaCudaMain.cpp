@@ -1,23 +1,74 @@
 
 #include <unistd.h>
+#include <errno.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 // Boost libraries
 //#include <boost/program_options.hpp>
 //namespace po = boost::program_options;
 
 
-int main(int argc, char** argv)
+//
+// Append our LD_LIBRARY_PATH to the argument environment variables we
+//  received, we need to do this because simply passing LD_PRELOAD in
+//  will kill all the other environment variables to the executable we load.
+char** appendEnv(char** arge, char* newarg)
+{
+	int argec = 1;
+	char **retVal = NULL;
+
+	// Find the number of args
+	while (arge[argec++]);
+
+	// Create new memory for the appended argument list
+	retVal = new char*[argec];
+	for (int i = 0; i < argec - 1; i++) {
+		// Copy the existing env vars
+		retVal[i] = new char[strlen(arge[i]) + 1];
+		strcpy(retVal[i], arge[i]);
+	}
+
+	// Alloc and copy the new var
+	retVal[argec-1] = new char[strlen(newarg) + 1];
+	strcpy(retVal[argec-1], newarg);
+
+	retVal[argec] = NULL;
+
+	return retVal;
+}
+
+
+//
+// Entry point
+int main(int argc, char** argv, char** arge)
 {
 	char exec_name[256];
 	const char *const exec_args[] = {
-		"Test",
+		NULL,
 	};
 	const char *const exec_envargs[] = {
 		"LD_PRELOAD=./gaCudaHook.so",
+		"LD_LIBRARY_PATH=/usr/local/cuda/lib64",
 		NULL,
 	};
+
+	
+	char *retval = getenv("LD_LIBRARY_PATH");
+	printf("env: %s\n", retval);
+
+	arge = appendEnv(arge, "LD_PRELOAD=./gaCudaHook.so");
+
+	printf("Env vars:\n");
+	char *itr = NULL;
+	int i = 0;
+	do {
+		itr = arge[i++];
+		printf("   Var: %s\n", itr);
+	} while (itr);
+	
+
 
 	if (argc == 2) {
 		strncpy(exec_name, argv[1], 256);
@@ -26,27 +77,14 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-	execve(exec_name, (char* const*)exec_args, (char* const*)exec_envargs);
+	printf("Running executable: %s\n", exec_name);
+	int error = execve(exec_name, (char* const*)exec_args, (char* const*)exec_envargs);
 	
-	/*
-	// Handle the arguments
-	po::options_description desc("Allowed options");
-	desc.add_options()
-		("help", "dump help")
-		("test", po::value<int>(), "blaaah test")
-	;
-
-	po::variables_map vm;
-	po::store(po::parse_command_line(argc, argv, desc), vm);
-	po::notify(vm);
-
-	if (vm.count("help")) {
-		printf("%s\n", desc);
+	if (error == -1) {
+		printf("Error running executable: %s\n", strerror(errno));
+	} else {
+		printf("Executable run Ok!\n");
 	}
-
-	if (vm.count("test")) {
-		printf("test was issued\n");
-	}
-  */
+	
 }
 
