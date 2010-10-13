@@ -1,10 +1,15 @@
-all: install
+INC=/usr/local/cuda/include
+LIB=/usr/local/cuda/lib64
+OUT=../out/gaCudaHook.so
+OUT_MAIN=../out/gaCudaMain
+
+all: gaCudaHook gaCudaMain
 
 gaCudaHook:
-	g++ ../src/gaCudaHook.cpp -I/usr/local/cuda/include -L/usr/local/cuda/lib -lcuda -lcudart -lcublas -O2 -o gaCudaHook.so -fPIC -shared
+	g++ ../src/gaCudaHook.cpp -I$(INC) -L$(SRC) -lcudart -O2 -o $(OUT) -fPIC -shared
 
-install: gaCudaHook
-	cp gaCudaHook.so /home/mharmer/dev/cs791v/lab1/out
+gaCudaMain:
+	g++ ../src/gaCudaMain.cpp -I$(INC) -L$(SRC) -O2 -o $(OUT_MAIN)
 
 clean:
 	rm *.so
