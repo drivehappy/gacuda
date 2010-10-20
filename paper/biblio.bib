@@ -1,7 +1,12 @@
+@misc{CUDAProf,
+title = "{CUDA Profiler Documentation}",
+author = {NVIDIA}
+}
 @misc{Acovea,
 author = {Scott R. Ladd},
-url = {http://www.coyotegulch.com/products/acovea/index.html},
-notes = "[Online] accessed 19-October-2010"
+title = {Acovea},
+howpublished = {\url{http://www.coyotegulch.com/products/acovea/index.html}},
+note = "[Online; accessed 19-October-2010]"
 }
 @article{Almagor2004,
 abstract = {Most modern compilers operate by applying a fixed, program-independent sequence of optimizations to all programs. Compiler writers choose a single "compilation sequence", or perhaps a couple of compilation sequences. In choosing a sequence, they may consider performance of benchmarks or other important codes. These sequences are intended as general-purpose tools, accessible through command-line flags such as -O2 and -O3.Specific compilation sequences make a significant difference in the quality of the generated code, whether compiling for speed, for space, or for other metrics. A single universal compilation sequence does not produce the best results over all programs [8, 10, 29, 32]. Finding an optimal program-specific compilation sequence is difficult because the space of potential sequences is huge and the interactions between optimizations are poorly understood. Moreover, there is no systematic exploration of the costs and benefits of searching for good (i.e., within a certain percentage of optimal) program-specific compilation sequences.In this paper, we perform a large experimental study of the space of compilation sequences over a set of known benchmarks, using our prototype adaptive compiler. Our goal is to characterize these spaces and to determine if it is cost-effective to construct custom compilation sequences. We report on five exhaustive enumerations which demonstrate that 80\% of the local minima in the space are within 5 to 10\% of the optimal solution. We describe three algorithms tailored to search such spaces and report on experiments that use these algorithms to find good compilation sequences. These experiments suggest that properties observed in the enumerations hold for larger search spaces and larger programs. Our findings indicate that for the cost of 200 to 4,550 compilations, we can find custom sequences that are 15 to 25\% better than the human-designed fixed-sequence originally used in our compiler.},
@@ -153,3 +158,4 @@ publisher = {IEEE Comput. Soc. Press},
 title = {{Combining loop transformations considering caches and scheduling}},
 url = {http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=566468}
 }
+

@@ -1,63 +1,77 @@
-\documentstyle[twocolumn]{IEEEtran}
-%\documentstyle[12pt,twoside,draft]{IEEEtran}
-%\documentstyle[9pt,twocolumn,technote,twoside]{IEEEtran}
+%\documentstyle[twocolumn]{IEEEtran}
+\documentclass[twocolumn]{IEEEtran}
+
+\usepackage{url}
 
 \begin{document}
 \bibliographystyle{plain}
 
-\title{gaCuda}
+\title{Optimizing CUDA Parameters with a GA}
 
-\author{Mark Harmer}
+\author{
+Mark Harmer\\
+\texttt{mharmer@cse.unr.edu}
+}
 
 \maketitle
 
-\begin{abstract}
-Compilers and runtimes contain many parameters that can be optimized to create a better performing program.
+% Remove page numbers
+\thispagestyle{empty}
+\pagestyle{empty}
 
-The exploration space of compiler optimization parameters has been done on gcc with Acovea \cite{Acovea} through the use of a genetic algorithm. Additionally, the optimization-space has been explored using heuristics \cite{Triantafyllis}.
+\begin{abstract}
+Compilers and runtimes contain many parameters that can be optimized to create a better performing program. Generally, these parameters are tuned by hand to speed up program execution. Because of the large optimization-space to search, a genetic algorithm is proposed to be used in conjunction with the CUDA compiler and runtime to find solutions for parameter sets.
 \end{abstract}
 
 \section{Introduction}
-GPGPU hardware are adept at processing parallel problems. The first step towards implementing a solution to a problem on the GPU is to select an appropriate algorithm. Next, the algorithm is implemented and tested to ensure the results are correct. If the program is required to compute many solutions using the same algorithm an optimization pass might be required after the code is functional. Such optimizations are usually hardware specific and require expert knowledge.
+%GPGPU hardware are adept at processing parallel problems. The first step towards implementing a solution to a problem on the GPU is to select an appropriate algorithm. Next, the algorithm is implemented and tested to ensure the results are correct. If the program is required to compute many solutions using the same algorithm an optimization pass might be required after the code is functional. Such optimizations are usually hardware specific and require expert knowledge.
 
-Optimizing CUDA applications through the parameters used both at compile-time and run-time requires searching a large search space. There exist several static analysis methods for determining how much faster a program will run after optimizations are applied, relative to the original program \cite{Murthy2010}. Although static analysis is considered faster to compute, it does not scale well into future hardware changes. The exploration space of compiler optimization parameters has been done on gcc with Acovea \cite{Acovea} through the use of a genetic algorithm. Additionally, the optimization-space has been explored using heuristics \cite{Triangtafyllis}.
+Optimizing CUDA applications through the parameters used both at compile-time and run-time requires searching a large search space. There exist several static analysis methods for determining how much faster a program will run after optimizations are applied, relative to the original program \cite{Murthy2010}. Although static analysis is considered faster to compute, it requires increasingly complex software to model evolving hardware.
 
-GPU occupancy is a good starting point towards optimizations. Occupancy is the number of active warps in ratio to the number of support warps per streaming multi-processor (SM). If occupancy is at maximum, the maximum supported number of warps on an SM are being utilized. Occupancy of a SM can drop below maximum if the:
+Previous work on searching for compiler optimizations on the CPU includes the exploration of parameters using a GA on the GNU compiler collection \cite{Acovea}. Additionally, the optimization-space has been explored using heuristics \cite{Triantafyllis}. A variety of other techniques have also been used. Work done on searching the CUDA parameter optimization-space has been limited to factors such as loop unrolling \cite{Murthy2010}.
+
+GPU occupancy is a starting point towards discovering good optimizations. Occupancy is defined as the ratio of the number of active warps to the number of supported warps per streaming multi-processor (SM). If occupancy is at maximum, the maximum supported number of warps on an SM are being utilized. Occupancy of a SM is based on the resource usage of the following within a SM:
 
 \begin{itemize}
-\item{number of thread blocks and the thread block size is low}
-\item{amount of shared memory per thread block is too large, therefore reducing the number of thread blocks scheduled}
-\item{number of thread blocks exceeds the maximum number of thread blocks scheduled at one time}
-\item{register usage per thread is too large and forces a reduced of scheduled thread blocks}
+\item{Shared memory}
+\item{Thread count}
+\item{Thread blocks (currently 8)}
+\item{Register usage}
+\item{Number of warps}
 \end{itemize}
 
-These factors can determine the occupancy of the GPU which in turn determines the execution time, a higher occupancy leads to usually faster results.
+These factors can determine the occupancy of the GPU. Generally, a higher occupancy leads to faster results.
 
-\section{Profiling Occupancy}
-The CUDA run-time contains a profiler that can be enabled at run-time via the environment variable \texttt{CUDA\_PROFILE}. The profile also makes use of a configuration file to determine which event counters to enable. Event counters are created only for 1 SM. Event counters include the occupancy information, memory transfer sizes, number of branch instructions, and many more (todo: ref CUDA Profile doc).
+\section{Profiling the GPU}
+The CUDA run-time contains a profiler that can be enabled at run-time via the environment variable \texttt{CUDA\_PROFILE}. The profile also makes use of a configuration file to determine which event counters to enable. Event counters are created only for 1 SM. Event counters include the occupancy information, memory transfer sizes, number of branch instructions, etc. \cite{CUDAProf}.
 
-The profile will run when the program is started and will dump a file to disk once the program is completed. This file will contain the resulting counter values, occupancy information, etc.
+The profiler will run when the program is started and will dump a file to disk once the program is completed. This output file will contain the resulting counter values.
 
-\section{Optimizing CUDA Applications Using a Genetic Algorithm}
+\section{Optimizing CUDA Applications Using a GA}
 A method is proposed to optimize CUDA application parameters using a genetic algorithm (GA). GAs are known for finding solutions in a large search space. The GA would run on a supplied application with an initial population and future generations of solutions. Since the GA itself is not computationally expensive it will be run on the CPU and drive the simulation over each member of the population.
 
-Additionally, this method will be designed to not interfer with the source code or other compile-time complexities. This allows for a much lower learning curve for the end-user on using the application to optimize their application. The caveat to this system is that only parameters that are passed to the CUDA run-time can be optimized. Thus, parameters such as \texttt{\-maxrregcount} and loop unroll factors used in \texttt{\#pragma} within source code are excluded from optimizing. This is a known limitation, and is considered as an area of future work.
+This method will be designed to not interfer with the source code or other compile-time complexities.
+This allows for a much lower learning curve for the end-user on using the application to optimize their application.
 
-The parameters that are available for optimization are the kernel block size, thread size and shared memory size. Aside from register usage, the available parameters for optimizing cover the GPU occupancy concern. Because of the black-box nature of the application, a GA is suited to provide a member of the population as input to the parameters and receive the results through the profiler output file.
+The parameters that are available for optimization are the kernel launch parameters: block size, thread size and shared memory size. Aside from register usage, the available parameters for optimizing cover the GPU occupancy concern. Because of the black-box nature of the application, a GA is suited to provide a member of the population as input to the parameters and receive the results through the profiler output file.
+%%
+The caveat to this system is that only parameters that are passed to the CUDA run-time can be optimized. Compiler parameters such as \texttt{maxrregcount} and loop unroll factors used in \texttt{\#pragma} are excluded from optimization. This is a known limitation, considering that search space of kernel parameters may be relatively small this design will probably be changed to incorporate the other optimization paramters available at compile-time.
 
-Generally, the difficulty with GAs is creating a fitness function that properly determines how well a member is performing relative to other members in the population. A proposed fitness function is simply use the occupancy result, additionally it is a maximizing function which works well with the GA.
+%Generally, the difficulty with GAs is creating a fitness function that properly determines how well a member is performing relative to other members in the population. A proposed fitness function is simply use the occupancy result, additionally it is a maximizing function which works well with the GA.
 
 \section{Details on Interacting With the CUDA Run-Time}
-It is proposed to create a shared library under linux that will be preloaded via the \texttt{LD\_PRELOAD} environment variable into the targetted process for optimization. Since \texttt{LD\_PRELOAD} forces the dynamic linker to load its exported functions first, we can setup our own CUDA kernel configure and invocation functions that will be called instead of the original functions. The names of these functions can be obtained through \texttt{nm} application under linux. These new functions can then be told to use different kernel configuration parameters, setting up the entry point for the GA to push a population individual's information to run the simulation. Since the shared library must be specified for the target application, a main program is needed to accept the target application name, create the GA, and run the target application with the \texttt{CUDA\_PROFILE} environment variable. The targetted application will be several thousand times across several generations using this approach.
+It is proposed to create a shared library under linux that will be preloaded via the \texttt{LD\_PRELOAD} environment variable into the targetted process for optimization. Since \texttt{LD\_PRELOAD} forces the dynamic linker to load its exported functions first, we can setup our own CUDA kernel configure and invocation functions that will be called instead of the original functions.
+%The names of these functions can be obtained through \texttt{nm} application under linux.
+These new functions can then be told to use different kernel configuration parameters, setting up the entry point for the GA to push a population individual's information to run the simulation. Since the shared library must be specified for the target application, a driver program is needed to accept the target application name, create the GA, and run the target application with the \texttt{CUDA\_PROFILE} environment variable. The targetted application will be run several thousand times across several generations using this approach.
 
 \section{Conclusion}
-A proposed system for using a GA to optimize certain parameters within a CUDA application was presented. Optimal parameter values may change across different hardware. This method for dynamic analysis of any CUDA application is considered to be generalized and flexible for future applications and hardware. The foreseeable drawbacks to such a system is if the CUDA run-time API is altered. Additionally, because of the design of the system some parameters are not exposed to optimization and could prevent any optimizations from occuring if their values are significantly detrimental to performance.
+A proposed system for using a GA to optimize certain parameters within a CUDA application was presented. Optimal parameter values may change across different hardware. This method for dynamic analysis of any CUDA application is considered to be generalized and flexible for future applications and hardware. The foreseeable drawback to such a system is if the CUDA run-time API is altered. The design will also attempt to incorporate compile-time parameters after the results of the run-time parameters are obtained.
 
-Additional approaches can be looked at for compile-time optimizations that don’t require code modifications - such as optimizing compiler arguments (maxrregcount). Code modifications can also be researched, although the user knowledge requirement of the optimization program will increase.
+Approaches can be looked at for compile-time optimizations that don’t require code modifications, such as optimizing compiler arguments \texttt{maxrregcount}. Code modifications with loop unrolling can also be researched, although the user knowledge requirement of the optimization program will increase.
 
 \newpage
 \bibliography{biblio.bib}
-\cite*{}
+\nocite*{}
 
 \end{document}
 
