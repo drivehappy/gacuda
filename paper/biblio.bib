@@ -1,0 +1,161 @@
+@misc{CUDAProf,
+title = "{CUDA Profiler Documentation}",
+author = {NVIDIA}
+}
+@misc{Acovea,
+author = {Scott R. Ladd},
+title = {Acovea},
+howpublished = {\url{http://www.coyotegulch.com/products/acovea/index.html}},
+note = "[Online; accessed 19-October-2010]"
+}
+@article{Almagor2004,
+abstract = {Most modern compilers operate by applying a fixed, program-independent sequence of optimizations to all programs. Compiler writers choose a single "compilation sequence", or perhaps a couple of compilation sequences. In choosing a sequence, they may consider performance of benchmarks or other important codes. These sequences are intended as general-purpose tools, accessible through command-line flags such as -O2 and -O3.Specific compilation sequences make a significant difference in the quality of the generated code, whether compiling for speed, for space, or for other metrics. A single universal compilation sequence does not produce the best results over all programs [8, 10, 29, 32]. Finding an optimal program-specific compilation sequence is difficult because the space of potential sequences is huge and the interactions between optimizations are poorly understood. Moreover, there is no systematic exploration of the costs and benefits of searching for good (i.e., within a certain percentage of optimal) program-specific compilation sequences.In this paper, we perform a large experimental study of the space of compilation sequences over a set of known benchmarks, using our prototype adaptive compiler. Our goal is to characterize these spaces and to determine if it is cost-effective to construct custom compilation sequences. We report on five exhaustive enumerations which demonstrate that 80\% of the local minima in the space are within 5 to 10\% of the optimal solution. We describe three algorithms tailored to search such spaces and report on experiments that use these algorithms to find good compilation sequences. These experiments suggest that properties observed in the enumerations hold for larger search spaces and larger programs. Our findings indicate that for the cost of 200 to 4,550 compilations, we can find custom sequences that are 15 to 25\% better than the human-designed fixed-sequence originally used in our compiler.},
+author = {Almagor, L. and Cooper, Keith D. and Grosul, Alexander and Harvey, Timothy J. and Reeves, Steven W. and Subramanian, Devika and Torczon, Linda and Waterman, Todd},
+file = {::},
+journal = {Languages, Compilers, Tools, and Theory for Embedded Systems},
+keywords = {adaptive compilers,learning models},
+number = {7},
+pages = {231},
+title = {{Finding effective compilation sequences}},
+url = {http://portal.acm.org/citation.cfm?id=997163.997196},
+volume = {39},
+year = {2004}
+}
+@article{Arora2010,
+author = {Arora, Ramnik and Tulshyan, Rupesh and Deb, Kalyanmoy},
+file = {::},
+journal = {Organization},
+title = {{Parallelization of Binary and Real-Coded Genetic Algorithms on GPU using CUDA}},
+year = {2010}
+}
+@misc{Blume1994,
+abstract = {It is the goal of the Polaris project to develop a new parallelizing compiler that will overcome  limitations of current compilers. While current parallelizing compilers may succeed on small kernels,  they often fail to extract any meaningful parallelism from large applications. After a study of  application codes, it was concluded that by adding a few new techniques to current compilers,  automatic parallelization becomes possible. The techniques needed are interprocedural analysis,  scalar and array privatization, symbolic dependence analysis, and advanced induction and reduction  recognition and elimination, along with run-time techniques to allow data dependent behavior.},
+author = {Blume, Bill and Eigenmann, Rudolf and Faigin, Keith and Grout, John and Hoeflinger, Jay and Padua, David and Petersen, Paul and Pottenger, Bill and Rauchwerger, Lawrence and Tu, Peng and Weatherford, Stephen},
+file = {::},
+pages = {10--1},
+publisher = {PROCEEDINGS OF THE WORKSHOP ON LANGUAGES AND COMPILERS FOR PARALLEL COMPUTING},
+title = {{Polaris: The Next Generation in Parallelizing Compilers}},
+url = {http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.3.2037},
+year = {1994}
+}
+@article{Chen2010,
+author = {Chen, Xiao-xi and Garis, Ming-hui Shi Hugo De},
+file = {::},
+journal = {Computer},
+keywords = {cuda,gender recognition,neural networks,parallel computing},
+pages = {1930--1934},
+title = {{GPU based Partially Connected Neural Evolutionary Network and its Application On Gender Recognition with Face Images 基于 GPU 的部分神经连接神经网络 在人脸性别识别中的应用}},
+year = {2010}
+}
+@article{Faculty2010,
+author = {Faculty, Computer Engineering and Inst, Computer Engineering},
+file = {::},
+journal = {Computer Engineering},
+keywords = {-cellular automata,cuda,emergent environments,genetic algorithm,gpu,parallel computing},
+pages = {37--41},
+title = {{Improving Performance for Emergent Environments Parameter Tuning and Simulation in Games Using GPU Chata Salwala, Vishnu Kotrajaras}},
+year = {2010}
+}
+@article{Han,
+author = {Han, Hwansoo and Rivera, Gabriel and Tseng, Chau-wen},
+file = {::},
+journal = {Time},
+title = {{Software Support For Improving Locality in Scientific Codes}}
+}
+@book{Kisuki,
+abstract = {Loop tiling and unrolling are two important program transformations to exploit locality and expose instruction level parallelism, respectively. In this paper, we address the problem of how to select tile sizes and unroll factors simultaneously. We approach this problem in an architecturally adaptive manner by means of iterative compilation, where we generate many versions of a program and decide upon the best by actually executing them and measuring their execution time. We evaluate several iterative strategies. We compare the levels of optimization obtained by iterative compilation to several well-known static techniques and show that we outperform each of them on a range of benchmarks across a variety of architectures. Finally, we show how to quantitatively trade-off the number of profiles needed and the level of optimization that can be reached},
+author = {Kisuki, T. and Knijnenburg, P.M.W. and O'Boyle, M.F.P.},
+booktitle = {Proceedings 2000 International Conference on Parallel Architectures and Compilation Techniques (Cat. No.PR00622)},
+doi = {10.1109/PACT.2000.888348},
+file = {::},
+isbn = {0-7695-0622-4},
+pages = {237--246},
+publisher = {IEEE Comput. Soc},
+title = {{Combined selection of tile sizes and unroll factors using iterative compilation}},
+url = {http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=888348}
+}
+@book{Murthy2010,
+abstract = {Graphics Processing Units (GPUs) are massively parallel, many-core processors with tremendous computational power and very high memory bandwidth. With the advent of general purpose programming models such as NVIDIA's CUDA and the new standard OpenCL, general purpose programming using GPUs (GPGPU) has become very popular. However, the GPU architecture and programming model have brought along with it many new challenges and opportunities for compiler optimizations. One such classical optimization is loop unrolling. Current GPU compilers perform limited loop unrolling. In this paper, we attempt to understand the impact of loop unrolling on GPGPU programs. We develop a semi-automatic, compile-time approach for identifying optimal unroll factors for suitable loops in GPGPU programs. In addition, we propose techniques for reducing the number of unroll factors evaluated, based on the characteristics of the program being compiled and the device being compiled to. We use these techniques to evaluate the effect of loop unrolling on a range of GPGPU programs and show that we correctly identify the optimal unroll factors. The optimized versions run up to 70 percent faster than the unoptimized versions.},
+author = {Murthy, Giridhar Sreenivasa and Ravishankar, Mahesh and Baskaran, Muthu Manikandan and Sadayappan, P},
+booktitle = {2010 IEEE International Symposium on Parallel \& Distributed Processing (IPDPS)},
+doi = {10.1109/IPDPS.2010.5470423},
+file = {::},
+isbn = {978-1-4244-6442-5},
+month = apr,
+pages = {1--11},
+publisher = {IEEE},
+title = {{Optimal loop unrolling for GPGPU programs}},
+url = {http://ieeexplore.ieee.org/xpl/freeabs\_all.jsp?arnumber=5470423},
+year = {2010}
+}
+@article{Pospichal,
+author = {Pospichal, Petr},
+file = {::},
+pages = {2--3},
+title = {{GPU-based Acceleration of the Genetic Algorithm}}
+}
+@article{Pospichala,
+author = {Pospichal, Petr and Schwarz, Josef and Jaros, Jiri},
+file = {::},
+keywords = {0-1 knapsack problem,cuda,gpgpu,parallel genetic algorithm,pga},
+number = {1},
+pages = {0--6},
+title = {{PARALLEL GENETIC ALGORITHM SOLVING 0 / 1 KNAPSACK PROBLEM RUNNING ON THE GPU}}
+}
+@article{Ryoo2008,
+abstract = {GPUs have recently attracted the attention of many application developers as commodity data-parallel coprocessors. The newest generations of GPU architecture provide easier programmability and increased generality while maintaining the tremendous memory bandwidth and computational power of traditional GPUs. This opportunity should redirect efforts in GPGPU research from ad hoc porting of applications to establishing principles and strategies that allow efficient mapping of computation to graphics hardware. In this work we discuss the GeForce 8800 GTX processor's organization, features, and generalized optimization strategies. Key to performance on this platform is using massive multithreading to utilize the large number of cores and hide global memory latency. To achieve this, developers face the challenge of striking the right balance between each thread's resource usage and the number of simultaneously active threads. The resources to manage include the number of registers and the amount of on-chip memory used per thread, number of threads per multiprocessor, and global memory bandwidth. We also obtain increased performance by reordering accesses to off-chip memory to combine requests to the same or contiguous memory locations and apply classical optimizations to reduce the number of executed operations. We apply these strategies across a variety of applications and domains and achieve between a 10.5X to 457X speedup in kernel codes and between 1.16X to 431X total application speedup.},
+author = {Ryoo, Shane and Rodrigues, Christopher I. and Baghsorkhi, Sara S. and Stone, Sam S. and Kirk, David B. and Hwu, Wen-mei W.},
+file = {::},
+journal = {Principles and Practice of Parallel Programming},
+keywords = {GPU computing,parallel computing},
+pages = {73--82},
+title = {{Optimization principles and application performance evaluation of a multithreaded GPU using CUDA}},
+url = {http://portal.acm.org/citation.cfm?id=1345220},
+year = {2008}
+}
+@book{Triantafyllis,
+abstract = {To meet the demands of modern architectures, optimizing compilers must incorporate an ever larger number of increasingly complex transformation algorithms. Since code transformations may often degrade performance or interfere with subsequent transformations, compilers employ predictive heuristics to guide optimizations by predicting their effects a priori. Unfortunately, the unpredictability of optimization interaction and the irregularity of today's wide-issue machines severely limit the accuracy of these heuristics. As a result, compiler writers may temper high variance optimizations with overly conservative heuristics or may exclude these optimizations entirely. While this process results in a compiler capable of generating good average code quality across the target benchmark set, it is at the cost of missed optimization opportunities in individual code segments. To replace predictive heuristics, researchers have proposed compilers which explore many optimization options, selecting the best one a posteriori. Unfortunately, these existing iterative compilation techniques are not practical for reasons of compile time and applicability. We present the Optimization-Space Exploration (OSE) compiler organization, the first practical iterative compilation strategy applicable to optimizations in general-purpose compilers. Instead of replacing predictive heuristics, OSE uses the compiler writer's knowledge encoded in the heuristics to select a small number of promising optimization alternatives for a given code segment. Compile time is limited by evaluating only these alternatives for hot code segments using a general compile-time performance estimator An OSE-enhanced version of Intel's highly-tuned, aggressively optimizing production compiler for IA-64 yields a significant performance improvement, more than 20\% in some cases, on Itanium for SPEC codes.},
+author = {Triantafyllis, S. and Vachharajani, M. and Vachharajani, N. and August, D.I.},
+booktitle = {International Symposium on Code Generation and Optimization, 2003. CGO 2003.},
+doi = {10.1109/CGO.2003.1191546},
+file = {::},
+isbn = {0-7695-1913-X},
+pages = {204--215},
+publisher = {IEEE Comput. Soc},
+title = {{Compiler optimization-space exploration}},
+url = {http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=1191546}
+}
+@book{Vaswani2007,
+abstract = {This paper proposes the use of empirical modeling techniques for building microarchitecture sensitive models for compiler optimizations. The models we build relate program performance to settings of compiler optimization flags, associated heuristics and key microarchitectural parameters. Unlike traditional analytical modeling methods, this relationship is learned entirely from data obtained by measuring performance at a small number of carefully selected compiler/microarchitecture configurations. We evaluate three different learning techniques in this context viz. linear regression, adaptive regression splines and radial basis function networks. We use the generated models to a) predict program performance at arbitrary compiler/microarchitecture configurations, b) quantify the significance of complex interactions between optimizations and the microarchitecture, and c) efficiently search for 'optimal' settings of optimization flags and heuristics for any given micro architectural configuration. Our evaluation using benchmarks from the SPEC CPU2000 suites suggests that accurate models (< 5\% average error in prediction) can be generated using a reasonable number of simulations. We also find that using compiler settings prescribed by a model-based search can improve program performance by as much as 19\% (with an average of 9.5\%) over highly optimized binaries},
+author = {Vaswani, Kapil and Thazhuthaveetil, Matthew J. and Srikant, Y. N. and Joseph, P. J.},
+booktitle = {International Symposium on Code Generation and Optimization (CGO'07)},
+doi = {10.1109/CGO.2007.25},
+file = {::},
+isbn = {0-7695-2764-7},
+month = mar,
+pages = {131--143},
+publisher = {IEEE},
+title = {{Microarchitecture Sensitive Empirical Models for Compiler Optimizations}},
+url = {http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=4145110},
+year = {2007}
+}
+@article{Vidal2010,
+author = {Vidal, Pablo and Alba, Enrique},
+file = {::},
+journal = {Architecture},
+title = {{A Multi-GPU Implementation of a Cellular Genetic Algorithm}},
+year = {2010}
+}
+@book{Wolf,
+abstract = {The performance of modern microprocessors is greatly affected by cache behavior, instruction scheduling, register allocation and loop overhead. High level loop transformations such as fission, fusion, tiling, interchanging and outer loop unrolling (e.g., unroll and jam) are well known to be capable of improving all these aspects of performance. Difficulties arise because these machine characteristics and these optimizations are highly interdependent. Interchanging two loops might, for example, improve cache behavior but make it impossible to allocate registers in the inner loop. Similarly, unrolling or interchanging a loop might individually hurt performance but doing both simultaneously might help performance. Little work has been published on how to combine these transformations into an efficient and effective compiler algorithm. In this paper we present a model that estimates total machine cycle time taking into account cache misses, software pipelining, register pressure and loop overhead. We then develop an algorithm to intelligently search through the various possible transformations, using our machine model to select the set of transformations leading to the best overall performance. We have implemented this algorithm as part of the MIPSPro commercial compiler system. We give experimental results showing that our approach is both effective and efficient in optimizing numerical programs},
+author = {Wolf, M.E. and Maydan, D.E.},
+booktitle = {Proceedings of the 29th Annual IEEE/ACM International Symposium on Microarchitecture. MICRO 29},
+doi = {10.1109/MICRO.1996.566468},
+file = {::},
+isbn = {0-8186-7641-8},
+pages = {274--286},
+publisher = {IEEE Comput. Soc. Press},
+title = {{Combining loop transformations considering caches and scheduling}},
+url = {http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=566468}
+}
+
