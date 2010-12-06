@@ -2,6 +2,8 @@
 #include <dlfcn.h>
 
 #include <stdio.h>
+#include <string>
+using namespace std;
 
 static void init() __attribute__((constructor));
 static void shutdown() __attribute__((destructor));
@@ -12,12 +14,12 @@ typedef int (*openType)(const char *, int);
 
 void init()
 {
-	printf("makeHook library loaded.\n");
+	//printf("makeHook library loaded.\n");
 }
 
 void shutdown()
 {
-	printf("makeHook library unloaded.\n");
+	//printf("makeHook library unloaded.\n");
 }
 
 extern "C"
@@ -47,7 +49,7 @@ extern "C"
    
     return realfopen64(filename, type); 
   }  
-  
+  */
 
   FILE *fopen(const char *filename, const char *type)
   {
@@ -73,34 +75,8 @@ extern "C"
    
     return realfopen(filename, type); 
   }  
-  */
+  
 
-  void copyFile(const char* filename, const char* dst_filename)
-  {
-    FILE* fp = fopen(filename, "r");
-    int filesize = 0;
-
-    if (fp) {
-      fseek(fp, 0, SEEK_END);
-      filesize = ftell(fp);
-      fseek(fp, 0, SEEK_SET);
-
-      char *buf = new char[filesize];
-      fread(buf, 1, filesize, fp);
-      fclose(fp);
-
-      FILE* dst = fopen(dst_filename, "w+");
-      if (dst) {
-        fwrite(buf, 1, filesize, fp);
-        fclose(dst);
-      } else {
-        printf("Error: Could not open destination file for writing: %s\n", dst_filename);
-        return;
-      }
-
-      delete[] buf;
-    }
-  }
 
   // g++
   int open(const char *pathname, int oflag)
@@ -123,11 +99,30 @@ extern "C"
       }
     }
 
-    const char dst[] = "dst.cu";      
-    printf("open: %s %s %i\n", pathname, dst, oflag);
-   
-    //return realopen(pathname, oflag); 
-    return realopen(dst, oflag); 
+    string filename = extractFilename(pathname);
+    string noextFilename = extractNoExtension(filename);
+    string extension = extractExtension(pathname);
+    string path = extractPathname(pathname);
+
+    //printf("open: %s %i\n", pathname, oflag);
+    /*
+    printf("  filename: %s\n", filename.c_str());
+    printf("  path: %s\n", extractPathname(pathname).c_str());
+    printf("  extension: %s\n", extension.c_str());
+    printf("  no_extension: %s\n", noextFilename.c_str());
+    */
+
+    if (extension.compare(string("cu")) == 0) {
+      string dstString = path + string("/") + noextFilename + string(".") + extension + string(".lock");
+      printf("  copy: %s\n", dstString.c_str());
+ 
+      // CUDA file, copy it
+      copyFile(pathname, dstString.c_str());
+      return realopen(dstString.c_str(), oflag); 
+    } else {
+      // Regular file, let it through
+      return realopen(pathname, oflag); 
+    }
   }  
 }
 
