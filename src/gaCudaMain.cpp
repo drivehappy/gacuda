@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "ga.h"
 
 //
 // Append our LD_LIBRARY_PATH to the argument environment variables we
